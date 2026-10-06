@@ -98,15 +98,15 @@ function requestEngineMove(){
   selectedSquare = null;
   legalMoves = [];
   engineStatusEl.textContent = "Stockfish is thinking…";
-  engine.postMessage("ucinewgame");
-  configureEngineStrength();
+  // Do not reset the engine between moves. Reinitializing the search
+  // state on every turn adds unnecessary overhead and can make the browser
+  // engine feel sluggish. The strength option is already configured when
+  // the engine becomes ready (and when the slider changes).
   engine.postMessage("position fen " + game.fen());
-  // Use a time budget rather than a fixed search depth. Depth can take
-  // wildly different amounts of time from one position to another, while
-  // movetime gives the browser a predictable response time. UCI_Elo still
-  // controls the intended playing strength.
+  // Keep response time short and predictable. Higher Elo gets a little
+  // more search time, but even the maximum is kept well below one second.
   const elo = getElo();
-  const movetime = Math.round(300 + ((elo - 1320) / (3190 - 1320)) * 900);
+  const movetime = Math.round(150 + ((elo - 1320) / (3190 - 1320)) * 350);
   engine.postMessage("go movetime " + movetime);
   render();
 }
