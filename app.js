@@ -57,7 +57,7 @@ function configureEngineStrength(){
 function makeEngine(){
   if(engine){ try{ engine.terminate(); }catch{} }
   engineReady = false;
-  engine = new Worker("https://cdn.jsdelivr.net/npm/stockfish@19.0.0/src/stockfish-19-lite-single.js");
+  engine = new Worker("./stockfish-19-lite-single.js");
   engine.onmessage = handleEngineMessage;
   engine.onerror = () => {
     engineStatusEl.textContent = "Engine failed to load. Try refreshing the page.";
