@@ -15,20 +15,20 @@ const promotionDialog = document.querySelector("#promotionDialog");
 
 const pieceAssets = {
   w:{
-    k:"./assets/white/king_white.png",
-    q:"./assets/white/queen_white.png",
-    r:"./assets/white/rook_white.png",
-    b:"./assets/white/bishop_white.png",
-    n:"./assets/white/knight_white.png",
-    p:"./assets/white/pawn_white.png"
+    k:"./assets/white/king_white.png?v=20261006",
+    q:"./assets/white/queen_white.png?v=20261006",
+    r:"./assets/white/rook_white.png?v=20261006",
+    b:"./assets/white/bishop_white.png?v=20261006",
+    n:"./assets/white/knight_white.png?v=20261006",
+    p:"./assets/white/pawn_white.png?v=20261006"
   },
   b:{
-    k:"./assets/black/king_black.png",
-    q:"./assets/black/queen_black.png",
-    r:"./assets/black/rook_black.png",
-    b:"./assets/black/bishop_black.png",
-    n:"./assets/black/knight_black.png",
-    p:"./assets/black/pawn_black.png"
+    k:"./assets/black/king_black.png?v=20261006",
+    q:"./assets/black/queen_black.png?v=20261006",
+    r:"./assets/black/rook_black.png?v=20261006",
+    b:"./assets/black/bishop_black.png?v=20261006",
+    n:"./assets/black/knight_black.png?v=20261006",
+    p:"./assets/black/pawn_black.png?v=20261006"
   }
 };
 
