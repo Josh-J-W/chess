@@ -1,0 +1,7 @@
+This project includes no copied third-party source code in the repository itself.
+
+Third-party software used at runtime:
+- chess.js 1.4.0 — BSD-2-Clause
+- Stockfish.js 10.0.2 — GPL-3.0
+
+See the linked upstream projects for their complete license texts and source code.
