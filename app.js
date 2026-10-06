@@ -101,12 +101,13 @@ function requestEngineMove(){
   engine.postMessage("ucinewgame");
   configureEngineStrength();
   engine.postMessage("position fen " + game.fen());
-  // Keep lower-Elo games responsive while still allowing the strongest
-  // settings to search deeper. UCI_Elo controls move quality; this depth
-  // cap controls how long the browser engine spends thinking.
+  // Use a time budget rather than a fixed search depth. Depth can take
+  // wildly different amounts of time from one position to another, while
+  // movetime gives the browser a predictable response time. UCI_Elo still
+  // controls the intended playing strength.
   const elo = getElo();
-  const depth = Math.round(8 + ((elo - 1320) / (3190 - 1320)) * 10);
-  engine.postMessage("go depth " + depth);
+  const movetime = Math.round(300 + ((elo - 1320) / (3190 - 1320)) * 900);
+  engine.postMessage("go movetime " + movetime);
   render();
 }
 
