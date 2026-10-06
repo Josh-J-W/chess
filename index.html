@@ -32,13 +32,20 @@
           </select>
         </div>
 
-        <div class="control-group">
-          <label for="difficulty">Difficulty</label>
-          <select id="difficulty">
-            <option value="8">Easy</option>
-            <option value="13" selected>Medium</option>
-            <option value="18">Hard</option>
-          </select>
+        <div class="control-group difficulty-control">
+          <div class="difficulty-heading">
+            <label for="difficulty">Difficulty</label>
+            <strong id="difficultyTitle" aria-live="polite">Intermediate</strong>
+          </div>
+          <div class="elo-row">
+            <span id="eloValue">1800</span>
+            <span>Elo</span>
+          </div>
+          <input id="difficulty" type="range" min="1320" max="3190" step="10" value="1800" aria-label="Stockfish Elo strength">
+          <div class="range-labels" aria-hidden="true">
+            <span>1320</span>
+            <span>3190</span>
+          </div>
         </div>
 
         <div class="status-card">
