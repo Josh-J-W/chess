@@ -26,14 +26,13 @@ let engine;
 
 function makeEngine(){
   if(engine){ try{ engine.terminate(); }catch{} }
-  engine = new Worker("https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js");
+  engine = new Worker("https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.wasm.js");
   engine.onmessage = handleEngineMessage;
   engine.onerror = () => {
     engineStatusEl.textContent = "Engine failed to load. Try refreshing the page.";
     engineBusy = false;
   };
   engine.postMessage("uci");
-  engine.postMessage("setoption name Threads value 1");
   engine.postMessage("isready");
 }
 
@@ -66,10 +65,8 @@ function requestEngineMove(){
   selectedSquare = null;
   legalMoves = [];
   engineStatusEl.textContent = "Stockfish is thinking…";
-  engine.postMessage("stop");
   engine.postMessage("ucinewgame");
   engine.postMessage("position fen " + game.fen());
-  engine.postMessage("setoption name Skill Level value " + skillForDepth(Number(difficultyEl.value)));
   engine.postMessage("go depth " + Number(difficultyEl.value));
   render();
 }
