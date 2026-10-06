@@ -16,13 +16,13 @@ A standalone, responsive chess page designed to run on GitHub Pages.
 - [chess.js](https://github.com/jhlywa/chess.js) 1.4.0 — BSD-2-Clause
 - [Stockfish.js](https://github.com/nmrugg/stockfish.js) 10.0.2 WASM build — GPL-3.0
 
-The first version uses the pinned cdnjs builds so the repository stays lightweight. The engine is loaded locally in the browser and all game state is handled client-side.
+Stockfish is downloaded by the GitHub Pages deployment workflow and included in the deployed site as a local browser worker. This avoids depending on a third-party CDN at runtime. The deployment uses the Stockfish.js 19.0.0 ASM-JS build for maximum browser compatibility; it is slower than WASM but substantially easier to deploy reliably through GitHub Pages.
 
 ## GitHub Pages
 
 This repository is intentionally a plain static site: `index.html` is the entry point and no build step is required.
 
-In GitHub, open **Settings → Pages**, choose **Deploy from a branch**, select **main** and **/(root)**, then save.
+In GitHub, open **Settings → Pages**, choose **GitHub Actions** as the source, then select the workflow named **Deploy chess site to GitHub Pages**. The workflow downloads the Stockfish browser engine and publishes the complete site.
 
 Your page will be available at:
 
