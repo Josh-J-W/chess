@@ -26,7 +26,7 @@ let engine;
 
 function makeEngine(){
   if(engine){ try{ engine.terminate(); }catch{} }
-  engine = new Worker("https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.wasm.js");
+  engine = new Worker("./stockfish-19-asm.js");
   engine.onmessage = handleEngineMessage;
   engine.onerror = () => {
     engineStatusEl.textContent = "Engine failed to load. Try refreshing the page.";
