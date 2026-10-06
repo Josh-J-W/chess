@@ -3,6 +3,8 @@ import { Chess } from "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
 const boardEl = document.querySelector("#board");
 const sideEl = document.querySelector("#side");
 const difficultyEl = document.querySelector("#difficulty");
+const difficultyTitleEl = document.querySelector("#difficultyTitle");
+const eloValueEl = document.querySelector("#eloValue");
 const newGameBtn = document.querySelector("#newGame");
 const clearMovesBtn = document.querySelector("#clearMoves");
 const statusEl = document.querySelector("#gameStatus");
@@ -23,14 +25,44 @@ let legalMoves = [];
 let pendingPromotion = null;
 let engineBusy = false;
 let engine;
+let engineReady = false;
+
+function getElo(){
+  return Number(difficultyEl.value);
+}
+
+function difficultyTitle(elo){
+  if(elo < 1450) return "Casual";
+  if(elo < 1650) return "Beginner";
+  if(elo < 1900) return "Intermediate";
+  if(elo < 2200) return "Advanced";
+  if(elo < 2500) return "Expert";
+  if(elo < 2800) return "Master";
+  return "Grandmaster";
+}
+
+function updateDifficultyDisplay(){
+  const elo = getElo();
+  eloValueEl.textContent = elo;
+  difficultyTitleEl.textContent = difficultyTitle(elo);
+  difficultyEl.setAttribute("aria-valuetext", elo + " Elo — " + difficultyTitle(elo));
+}
+
+function configureEngineStrength(){
+  if(!engine || !engineReady) return;
+  engine.postMessage("setoption name UCI_LimitStrength value true");
+  engine.postMessage("setoption name UCI_Elo value " + getElo());
+}
 
 function makeEngine(){
   if(engine){ try{ engine.terminate(); }catch{} }
+  engineReady = false;
   engine = new Worker("./stockfish-19-asm.js");
   engine.onmessage = handleEngineMessage;
   engine.onerror = () => {
     engineStatusEl.textContent = "Engine failed to load. Try refreshing the page.";
     engineBusy = false;
+    engineReady = false;
   };
   engine.postMessage("uci");
   engine.postMessage("isready");
@@ -39,6 +71,8 @@ function makeEngine(){
 function handleEngineMessage(event){
   const line = String(event.data);
   if(line === "readyok"){
+    engineReady = true;
+    configureEngineStrength();
     engineStatusEl.textContent = "Stockfish ready";
     if(game.turn() !== playerColor && !game.isGameOver()) requestEngineMove();
     return;
@@ -50,8 +84,7 @@ function handleEngineMessage(event){
       catch(e){ console.error(e); }
       engineBusy = false;
       render();
-      if(!game.isGameOver() && game.turn() === playerColor) updateStatus();
-      else updateStatus();
+      updateStatus();
     }else{
       engineBusy = false;
       updateStatus();
@@ -60,21 +93,16 @@ function handleEngineMessage(event){
 }
 
 function requestEngineMove(){
-  if(engineBusy || game.isGameOver() || game.turn() === playerColor) return;
+  if(engineBusy || !engineReady || game.isGameOver() || game.turn() === playerColor) return;
   engineBusy = true;
   selectedSquare = null;
   legalMoves = [];
   engineStatusEl.textContent = "Stockfish is thinking…";
   engine.postMessage("ucinewgame");
+  configureEngineStrength();
   engine.postMessage("position fen " + game.fen());
-  engine.postMessage("go depth " + Number(difficultyEl.value));
+  engine.postMessage("go depth 18");
   render();
-}
-
-function skillForDepth(depth){
-  if(depth <= 8) return 4;
-  if(depth <= 13) return 12;
-  return 20;
 }
 
 function resetGame(){
@@ -232,9 +260,14 @@ function updateStatus(){
 }
 
 sideEl.addEventListener("change", resetGame);
+difficultyEl.addEventListener("input", () => {
+  updateDifficultyDisplay();
+});
 difficultyEl.addEventListener("change", () => {
+  updateDifficultyDisplay();
   if(!game.isGameOver() && game.turn() !== playerColor){
     engineBusy = false;
+    configureEngineStrength();
     requestEngineMove();
   }
 });
@@ -248,4 +281,5 @@ clearMovesBtn.addEventListener("click", () => {
   makeEngine();
 });
 
+updateDifficultyDisplay();
 resetGame();
