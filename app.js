@@ -13,9 +13,23 @@ const movesEl = document.querySelector("#moves");
 const engineStatusEl = document.querySelector("#engineStatus");
 const promotionDialog = document.querySelector("#promotionDialog");
 
-const pieces = {
-  w:{k:"♔",q:"♕",r:"♖",b:"♗",n:"♘",p:"♙"},
-  b:{k:"♚",q:"♛",r:"♜",b:"♝",n:"♞",p:"♟"}
+const pieceAssets = {
+  w:{
+    k:"./assets/white/king_white.png",
+    q:"./assets/white/queen_white.png",
+    r:"./assets/white/rook_white.png",
+    b:"./assets/white/bishop_white.png",
+    n:"./assets/white/knight_white.png",
+    p:"./assets/white/pawn_white.png"
+  },
+  b:{
+    k:"./assets/black/king_black.png",
+    q:"./assets/black/queen_black.png",
+    r:"./assets/black/rook_black.png",
+    b:"./assets/black/bishop_black.png",
+    n:"./assets/black/knight_black.png",
+    p:"./assets/black/pawn_black.png"
+  }
 };
 
 let game = new Chess();
@@ -146,10 +160,12 @@ function render(){
 
       const piece = game.get(square);
       if(piece){
-        const span = document.createElement("span");
-        span.className = "piece " + (piece.color === "w" ? "white" : "black");
-        span.textContent = pieces[piece.color][piece.type];
-        el.appendChild(span);
+        const img = document.createElement("img");
+        img.className = "piece-image";
+        img.src = pieceAssets[piece.color][piece.type];
+        img.alt = piece.color === "w" ? "White " + piece.type : "Black " + piece.type;
+        img.draggable = false;
+        el.appendChild(img);
       }
 
       if(rank === (playerColor === "w" ? "1" : "8")){
