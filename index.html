@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A simple chess game against Stockfish.">
+  <title>Chess vs Stockfish</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div>
+        <p class="eyebrow">JOSH'S CHESS</p>
+        <h1>Chess vs Stockfish</h1>
+      </div>
+      <button id="newGame" class="button primary">New Game</button>
+    </header>
+
+    <section class="game-layout">
+      <div class="board-wrap">
+        <div id="board" class="board" aria-label="Chess board"></div>
+        <div id="engineStatus" class="engine-status">Starting engine…</div>
+      </div>
+
+      <aside class="panel">
+        <div class="control-group">
+          <label for="side">Play as</label>
+          <select id="side">
+            <option value="w">White</option>
+            <option value="b">Black</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="difficulty">Difficulty</label>
+          <select id="difficulty">
+            <option value="8">Easy</option>
+            <option value="13" selected>Medium</option>
+            <option value="18">Hard</option>
+          </select>
+        </div>
+
+        <div class="status-card">
+          <span class="status-label">Game</span>
+          <strong id="gameStatus">Your turn</strong>
+          <span id="moveInfo">White to move</span>
+        </div>
+
+        <div class="moves-card">
+          <div class="card-heading">
+            <span>Moves</span>
+            <button id="clearMoves" class="text-button" type="button">Clear</button>
+          </div>
+          <ol id="moves" class="moves"></ol>
+        </div>
+
+        <p class="hint">Click a piece, then click a highlighted square. Castling, en passant, promotion, checkmate, and draws are supported.</p>
+      </aside>
+    </section>
+
+    <dialog id="promotionDialog" class="promotion-dialog">
+      <form method="dialog">
+        <h2>Promote pawn</h2>
+        <p>Choose a piece:</p>
+        <div class="promotion-options">
+          <button value="q" type="submit">♕ Queen</button>
+          <button value="r" type="submit">♖ Rook</button>
+          <button value="b" type="submit">♗ Bishop</button>
+          <button value="n" type="submit">♘ Knight</button>
+        </div>
+      </form>
+    </dialog>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
