@@ -24,8 +24,11 @@ jobs:
       - name: Prepare Stockfish browser engine
         run: |
           curl -L --fail --retry 3 \
-            -o stockfish-19-asm.js \
-            https://github.com/nmrugg/stockfish.js/releases/download/v19.0.0/stockfish-19-asm.js
+            -o stockfish-19-lite-single.js \
+            https://github.com/nmrugg/stockfish.js/releases/download/v19.0.0/stockfish-19-lite-single.js
+          curl -L --fail --retry 3 \
+            -o stockfish-19-lite-single.wasm \
+            https://github.com/nmrugg/stockfish.js/releases/download/v19.0.0/stockfish-19-lite-single.wasm
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
